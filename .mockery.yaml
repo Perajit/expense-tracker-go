@@ -1,0 +1,17 @@
+all: false
+dir: '{{.InterfaceDir}}/mocks'
+filename: "mock_{{.InterfaceName}}.go"
+force-file-write: true
+formatter: goimports
+pkgname: mocks
+template: testify
+
+packages:
+  github.com/Perajit/expense-tracker-go/internal/user:
+    interfaces:
+      UserService:
+      UserRepository:
+  github.com/Perajit/expense-tracker-go/internal/auth:
+    interfaces:
+      AuthService:
+      TokenRepository:
