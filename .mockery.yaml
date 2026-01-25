@@ -15,3 +15,11 @@ packages:
     interfaces:
       AuthService:
       TokenRepository:
+  github.com/Perajit/expense-tracker-go/internal/expense:
+    interfaces:
+      ExpenseService:
+      ExpenseRepository:
+      CategoryService:
+      CategoryRepository:
+      TagService:
+      TagRepository:

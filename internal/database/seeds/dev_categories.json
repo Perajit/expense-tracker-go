@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Custom",
+    "userId": 1
+  },
+  {
+    "name": "Custom",
+    "userId": 2
+  },
+  {
+    "name": "Others",
+    "userId": 0
+  },
+  {
+    "name": "Dining",
+    "userId": 0
+  },
+  {
+    "name": "Insurance",
+    "userId": 0
+  }
+]
