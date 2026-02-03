@@ -27,6 +27,7 @@ func (h *AuthHandler) RegisterRoutes(app *fiber.App) {
 	group := app.Group("/auth")
 	group.Post("/login", h.Login)
 	group.Post("/refresh", h.Refresh)
+	group.Post("/logout", h.Logout)
 }
 
 func (h *AuthHandler) Login(c *fiber.Ctx) error {
@@ -42,7 +43,7 @@ func (h *AuthHandler) Login(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": apperror.ErrInvalidCredentials.Error()})
 	}
 
-	return c.JSON(tokens)
+	return c.Status(fiber.StatusOK).JSON(tokens)
 }
 
 func (h *AuthHandler) Refresh(c *fiber.Ctx) error {
@@ -58,5 +59,21 @@ func (h *AuthHandler) Refresh(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": apperror.ErrDefault.Error()})
 	}
 
-	return c.JSON(tokens)
+	return c.Status(fiber.StatusOK).JSON(tokens)
+}
+
+func (h *AuthHandler) Logout(c *fiber.Ctx) error {
+	authUserID, errUserID := util.GetAuthUserID(c)
+	if errUserID != nil {
+		log.Error(errUserID)
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": apperror.ErrUnauthorized.Error()})
+	}
+
+	err := h.authService.Logout(authUserID)
+	if err != nil {
+		log.Error(err)
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": apperror.ErrDefault.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success"})
 }

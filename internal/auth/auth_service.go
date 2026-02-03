@@ -24,6 +24,7 @@ type AuthService interface {
 	Login(dto LoginRequest, userProvider UserProvider) (*TokenResponse, error)
 	Verify(access string) (uint, error)
 	Refresh(refresh string) (*TokenResponse, error)
+	Logout(userID uint) error
 }
 
 type authService struct {
@@ -137,20 +138,24 @@ func (s *authService) Refresh(refresh string) (*TokenResponse, error) {
 	return result, nil
 }
 
-func (s *authService) revokeRefreshToken(tx *gorm.DB, t *TokenEntity) error {
-	tokenRepository := s.tokenRepo.WithTx(tx)
+func (s *authService) Logout(userID uint) error {
+	return s.tokenRepo.RevokeAllFromUser(userID)
+}
 
-	return tokenRepository.Revoke(t)
+func (s *authService) revokeRefreshToken(tx *gorm.DB, t *TokenEntity) error {
+	tokenRepo := s.tokenRepo.WithTx(tx)
+
+	return tokenRepo.Revoke(t)
 }
 
 func (s *authService) revokeAllfreshTokensFromUser(tx *gorm.DB, userID uint) error {
-	tokenRepository := s.tokenRepo.WithTx(tx)
+	tokenRepo := s.tokenRepo.WithTx(tx)
 
-	return tokenRepository.RevokeAllFromUser(userID)
+	return tokenRepo.RevokeAllFromUser(userID)
 }
 
 func (s *authService) issueTokens(tx *gorm.DB, userIDStr string) (*TokenResponse, error) {
-	tokenRepository := s.tokenRepo.WithTx(tx)
+	tokenRepo := s.tokenRepo.WithTx(tx)
 
 	accessExpiresAt := time.Now().Add(accessExpiresIn)
 	access, err := util.GenerateAccessToken(userIDStr, accessExpiresAt, s.accessSecret)
@@ -167,7 +172,7 @@ func (s *authService) issueTokens(tx *gorm.DB, userIDStr string) (*TokenResponse
 
 	userIDInt, err := strconv.Atoi(userIDStr)
 	t := &TokenEntity{TokenID: refreshTokenID, UserID: uint(userIDInt), ExpiresAt: refreshExpiresAt}
-	if err := tokenRepository.Create(t); err != nil {
+	if err := tokenRepo.Create(t); err != nil {
 		return nil, err
 	}
 
