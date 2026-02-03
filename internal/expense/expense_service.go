@@ -101,12 +101,22 @@ func (s *expenseService) UpdateExpense(id uint, authUserID uint, dto UpdateExpen
 		if err != nil {
 			return err
 		}
+
 		expense.Tags = tags
 	}
 
 	err = s.db.Transaction(func(tx *gorm.DB) error {
-		repo := s.expenseRepo.WithTx(tx)
-		return repo.Update(expense)
+		expenseRepo := s.expenseRepo.WithTx(tx)
+
+		if err := expenseRepo.Update(expense); err != nil {
+			return err
+		}
+
+		if err := expenseRepo.UpdateTags(expense, expense.Tags); err != nil {
+			return err
+		}
+
+		return nil
 	})
 
 	return nil

@@ -454,6 +454,63 @@ func (_c *MockExpenseRepository_Update_Call) RunAndReturn(run func(expense1 *exp
 	return _c
 }
 
+// UpdateTags provides a mock function for the type MockExpenseRepository
+func (_mock *MockExpenseRepository) UpdateTags(expense1 *expense.ExpenseEntity, tags []expense.TagEntity) error {
+	ret := _mock.Called(expense1, tags)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateTags")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(*expense.ExpenseEntity, []expense.TagEntity) error); ok {
+		r0 = returnFunc(expense1, tags)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockExpenseRepository_UpdateTags_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateTags'
+type MockExpenseRepository_UpdateTags_Call struct {
+	*mock.Call
+}
+
+// UpdateTags is a helper method to define mock.On call
+//   - expense1 *expense.ExpenseEntity
+//   - tags []expense.TagEntity
+func (_e *MockExpenseRepository_Expecter) UpdateTags(expense1 interface{}, tags interface{}) *MockExpenseRepository_UpdateTags_Call {
+	return &MockExpenseRepository_UpdateTags_Call{Call: _e.mock.On("UpdateTags", expense1, tags)}
+}
+
+func (_c *MockExpenseRepository_UpdateTags_Call) Run(run func(expense1 *expense.ExpenseEntity, tags []expense.TagEntity)) *MockExpenseRepository_UpdateTags_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 *expense.ExpenseEntity
+		if args[0] != nil {
+			arg0 = args[0].(*expense.ExpenseEntity)
+		}
+		var arg1 []expense.TagEntity
+		if args[1] != nil {
+			arg1 = args[1].([]expense.TagEntity)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockExpenseRepository_UpdateTags_Call) Return(err error) *MockExpenseRepository_UpdateTags_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockExpenseRepository_UpdateTags_Call) RunAndReturn(run func(expense1 *expense.ExpenseEntity, tags []expense.TagEntity) error) *MockExpenseRepository_UpdateTags_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // WithTx provides a mock function for the type MockExpenseRepository
 func (_mock *MockExpenseRepository) WithTx(tx *gorm.DB) expense.ExpenseRepository {
 	ret := _mock.Called(tx)

@@ -55,11 +55,25 @@ func TestUpdateExpense(t *testing.T) {
 			if e.Date != dto.Date.Unix() || e.Amount != *dto.Amount || e.Note != *dto.Note || e.CategoryID != *dto.CategoryID {
 				return false
 			}
-			if !slices.Equal(e.Tags, tags) {
-				return false
-			}
 			return true
 		})).Return(nil).Once()
+		mockExpenseRepo.On("UpdateTags",
+			mock.MatchedBy(func(e *expense.ExpenseEntity) bool {
+				if e.ID != existingEntity.ID || e.UserID != existingEntity.UserID {
+					return false
+				}
+				if e.Date != dto.Date.Unix() || e.Amount != *dto.Amount || e.Note != *dto.Note || e.CategoryID != *dto.CategoryID {
+					return false
+				}
+				return true
+			}),
+			mock.MatchedBy(func(eTags []expense.TagEntity) bool {
+				if !slices.Equal(eTags, tags) {
+					return false
+				}
+				return true
+			}),
+		).Return(nil).Once()
 
 		mockCategoryService := new(mocks.MockCategoryService)
 		mockCategoryService.On("IsCategoryOwner", newCategoryID, userID).Return(true, nil).Once()

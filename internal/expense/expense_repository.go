@@ -10,6 +10,7 @@ type ExpenseRepository interface {
 	IsOwner(id uint, userID uint) (bool, error)
 	Create(expense *ExpenseEntity) error
 	Update(expense *ExpenseEntity) error
+	UpdateTags(expense *ExpenseEntity, tags []TagEntity) error
 	Delete(id uint) error
 }
 
@@ -81,7 +82,10 @@ func (r *expenseRepository) Update(expense *ExpenseEntity) error {
 		return err
 	}
 
-	tags := expense.Tags
+	return nil
+}
+
+func (r *expenseRepository) UpdateTags(expense *ExpenseEntity, tags []TagEntity) error {
 	if err := r.db.Model(expense).Association("Tags").Replace(tags); err != nil {
 		return err
 	}
