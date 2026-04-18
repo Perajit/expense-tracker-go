@@ -5,6 +5,7 @@ import (
 
 	"github.com/Perajit/expense-tracker-go/internal/auth"
 	"github.com/Perajit/expense-tracker-go/internal/database"
+	"github.com/Perajit/expense-tracker-go/internal/expense"
 	"github.com/Perajit/expense-tracker-go/internal/user"
 	"github.com/joho/godotenv"
 )
@@ -25,6 +26,7 @@ func main() {
 	models := []any{}
 	models = append(models, user.GetModels()...)
 	models = append(models, auth.GetModels()...)
+	models = append(models, expense.GetModels()...)
 
 	if err := db.AutoMigrate(models...); err != nil {
 		log.Fatalf("Migration failed: %v", err)

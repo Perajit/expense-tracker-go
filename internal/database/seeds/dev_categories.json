@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Others",
+    "userId": 0,
+    "isDefault": true
+  },
+  {
+    "name": "Food",
+    "userId": 0
+  },
+  {
+    "name": "Entertainment",
+    "userId": 0
+  },
+  {
+    "name": "Custom",
+    "userId": 1
+  },
+  {
+    "name": "Custom",
+    "userId": 2
+  }
+]

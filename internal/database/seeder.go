@@ -14,6 +14,7 @@ func Seed(db *gorm.DB, env string) {
 	log.Println("Starting database seeding")
 
 	seedUsers(db, env)
+	seedCategories(db, env)
 
 	log.Println("Completed database seeding")
 }
