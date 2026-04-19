@@ -12,9 +12,9 @@ import (
 	"gorm.io/gorm"
 )
 
-func TestUpdateUser(t *testing.T) {
+func TestUserService_UpdateUser(t *testing.T) {
 	var id uint = 1
-	newPassword := "pwd456"
+	newPassword := "pwd-new"
 	newEmail := "new@example.com"
 
 	tests_success := []struct {
@@ -77,8 +77,8 @@ func TestUpdateUser(t *testing.T) {
 			existingEntity := &user.UserEntity{
 				Model:    gorm.Model{ID: id},
 				Username: "user1",
-				Password: "pwd123",
-				Email:    "test@example.com",
+				Password: "pwd1",
+				Email:    "user1@example.com",
 			}
 
 			mockUserRepo := new(mocks.MockUserRepository)
@@ -111,14 +111,16 @@ func TestUpdateUser(t *testing.T) {
 	})
 
 	t.Run("error_permission", func(t *testing.T) {
+		existingEntity := &user.UserEntity{
+			Model:    gorm.Model{ID: id},
+			Username: "user1",
+			Password: "pwd1",
+			Email:    "user1@example.com",
+		}
+
 		dto := user.UpdateUserRequest{
 			Password: &newPassword,
 			Email:    &newEmail,
-		}
-		existingEntity := &user.UserEntity{
-			Model:    gorm.Model{ID: id},
-			Password: "pwd123",
-			Email:    "test@example.com",
 		}
 
 		mockUserRepo := new(mocks.MockUserRepository)
@@ -133,14 +135,16 @@ func TestUpdateUser(t *testing.T) {
 	})
 
 	t.Run("error_update", func(t *testing.T) {
+		existingEntity := &user.UserEntity{
+			Model:    gorm.Model{ID: id},
+			Username: "user1",
+			Password: "pwd1",
+			Email:    "user1@example.com",
+		}
+
 		dto := user.UpdateUserRequest{
 			Password: &newPassword,
 			Email:    &newEmail,
-		}
-		existingEntity := &user.UserEntity{
-			Model:    gorm.Model{ID: id},
-			Password: "pwd123",
-			Email:    "test@example.com",
 		}
 
 		mockUserRepo := new(mocks.MockUserRepository)

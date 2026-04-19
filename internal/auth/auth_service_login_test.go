@@ -23,15 +23,16 @@ type Credentials struct {
 	Password string
 }
 
-func TestLogin(t *testing.T) {
+func TestAuthService_Login(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		var userID uint = 1
-		dto := auth.LoginRequest{
-			Username: "test",
-			Password: "pwd123",
-		}
-		matchedUser := GenerateUser(1, user.CreateUserRequest{Username: dto.Username, Password: dto.Password, Email: "test@example.com"})
 		var refreshTokenID string
+
+		dto := auth.LoginRequest{
+			Username: "user1",
+			Password: "pwd1",
+		}
+		matchedUser := GenerateUser(1, user.CreateUserRequest{Username: dto.Username, Password: dto.Password, Email: "user1@example.com"})
 
 		db := testutil.SetupDB()
 
@@ -79,7 +80,7 @@ func TestLogin(t *testing.T) {
 	t.Run("error_notfound_email", func(t *testing.T) {
 		dto := auth.LoginRequest{
 			Username: "test",
-			Password: "pwd123",
+			Password: "pwd1",
 		}
 
 		db := testutil.SetupDB()
@@ -101,10 +102,10 @@ func TestLogin(t *testing.T) {
 
 	t.Run("error_incorrect_password", func(t *testing.T) {
 		dto := auth.LoginRequest{
-			Username: "test",
-			Password: "pwd123",
+			Username: "user1",
+			Password: "pwd1",
 		}
-		matchedUser := GenerateUser(1, user.CreateUserRequest{Username: dto.Username, Password: "pwd456", Email: "test@example.com"})
+		matchedUser := GenerateUser(1, user.CreateUserRequest{Username: dto.Username, Password: "pwd456", Email: "user1@example.com"})
 
 		db := testutil.SetupDB()
 

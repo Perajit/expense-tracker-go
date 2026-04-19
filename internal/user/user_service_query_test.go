@@ -13,14 +13,15 @@ import (
 	"gorm.io/gorm"
 )
 
-func TestGetUserByID(t *testing.T) {
+func TestUserService_GetUserByID(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		var id uint = 1
+
 		matchedEntity := &user.UserEntity{
 			Model:    gorm.Model{ID: id},
 			Username: "user1",
 			Password: "hash123",
-			Email:    "test@example.com",
+			Email:    "user1@example.com",
 		}
 
 		mockUserRepo := new(mocks.MockUserRepository)
@@ -61,13 +62,13 @@ func TestGetUserByID(t *testing.T) {
 	})
 }
 
-func TestGetUserByUsername(t *testing.T) {
+func TestUserService_GetUserByUsername(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		matchedEntity := &user.UserEntity{
 			Model:    gorm.Model{ID: 1},
 			Username: "user1",
 			Password: "hash123",
-			Email:    "test@example.com",
+			Email:    "user1@example.com",
 		}
 
 		mockUserRepo := new(mocks.MockUserRepository)

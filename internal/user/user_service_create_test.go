@@ -11,14 +11,15 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestCreateUser(t *testing.T) {
+func TestUserService_CreateUser(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
+		var newEntity *user.UserEntity
+
 		dto := user.CreateUserRequest{
 			Username: "user1",
-			Password: "pwd123",
-			Email:    "test@example.com",
+			Password: "pwd1",
+			Email:    "user1@example.com",
 		}
-		var newEntity *user.UserEntity
 
 		mockUserRepo := new(mocks.MockUserRepository)
 		mockUserRepo.On("ExistsByUsername", dto.Username).Return(false, nil).Once()
@@ -44,7 +45,7 @@ func TestCreateUser(t *testing.T) {
 	t.Run("error_duplicated_email", func(t *testing.T) {
 		dto := user.CreateUserRequest{
 			Username: "user1",
-			Password: "pwd123",
+			Password: "pwd1",
 			Email:    "duplicated@example.com",
 		}
 
@@ -63,8 +64,8 @@ func TestCreateUser(t *testing.T) {
 	t.Run("error_create", func(t *testing.T) {
 		dto := user.CreateUserRequest{
 			Username: "user1",
-			Password: "pwd123",
-			Email:    "test@example.com",
+			Password: "pwd1",
+			Email:    "user1@example.com",
 		}
 
 		mockUserRepo := new(mocks.MockUserRepository)

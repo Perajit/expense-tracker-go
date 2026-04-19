@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestDeleteUser(t *testing.T) {
+func TestUserService_DeleteUser(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		var id uint = 1
 

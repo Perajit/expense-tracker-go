@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestVerify(t *testing.T) {
+func TestAuthService_Verify(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		access := GenerateAccessToken(1, time.Now().Add(time.Hour))
 

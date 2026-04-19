@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestRefresh(t *testing.T) {
+func TestAuthService_Refresh(t *testing.T) {
 	t.Run("success_unrevoked_token", func(t *testing.T) {
 		refreshToken := &auth.TokenEntity{
 			TokenID:   "123",
